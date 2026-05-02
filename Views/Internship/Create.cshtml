@@ -1,0 +1,24 @@
+@model InternshipPortal.Models.Internship
+
+<div class="container mt-5">
+    <h2>Post a New Internship</h2>
+    <form asp-action="Create" method="post">
+        <div class="mb-3">
+            <label>Job Title</label>
+            <input asp-for="Title" class="form-control" placeholder="e.g. .NET Developer" required />
+        </div>
+        <div class="mb-3">
+            <label>Company Name</label>
+            <input asp-for="CompanyName" class="form-control" required />
+        </div>
+        <div class="mb-3">
+            <label>Required Skills (Comma separated)</label>
+            <input asp-for="RequiredSkills" class="form-control" placeholder="C#, SQL, HTML" required />
+        </div>
+        <div class="mb-3">
+            <label>Description</label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+        </div>
+        <button type="submit" class="btn btn-success">Post Job</button>
+    </form>
+</div>

@@ -1,0 +1,65 @@
+@model IEnumerable<dynamic>
+
+
+<form asp-action="Index" method="get" class="mb-4">
+    <div class="input-group">
+        <input type="text" name="searchString" class="form-control" placeholder="Search by job title or company..." value="@ViewBag.Search">
+        <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i> Search</button>
+    </div>
+</form>
+
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8">
+            <h2>Recommended Internships</h2>
+            <p class="text-muted">Based on your skills: <strong>@ViewBag.StudentSkills</strong></p>
+            <hr />
+
+            @foreach (var item in Model)
+            {
+                <div class="card mb-3 shadow-sm">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="card-title">@item.Internship.Title</h5>
+                            <h6 class="text-secondary">@item.Internship.CompanyName</h6>
+                            <div class="mt-2">
+    <div class="mt-2">
+    <span class="text-muted small d-block mb-1">Required Skills:</span>
+    @foreach (var skill in item.Internship.RequiredSkills.Split(','))
+    {
+        <span class="badge rounded-pill bg-primary-subtle text-primary border border-primary-subtle me-1">
+            <i class="bi bi-check2-circle"></i> @skill.Trim()
+        </span>
+    }
+</div>
+</div>
+                        </div>
+                        <div class="text-center">
+                            <h3 class="text-primary">@item.Score%</h3>
+                            <span class="badge @(item.Score > 70 ? "bg-success" : "bg-warning")">Match Score</span>
+                            <br />
+                            <form asp-action="Apply" method="post">
+    <input type="hidden" name="internshipId" value="@item.Internship.InternshipId" />
+    <input type="hidden" name="matchScore" value="@item.Score" />
+    
+    @{
+        // Simple check to see if we already applied (optional logic)
+    }
+    <button type="submit" class="btn btn-sm btn-success mt-2">Click to Apply</button>
+</form>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card bg-light p-3">
+                <h5>Update Your Skills</h5>
+                <p>Add skills like C#, Java, SQL separated by commas to improve your match score.</p>
+                <a href="/Student/Profile" class="btn btn-outline-primary">Edit Profile</a>
+            </div>
+        </div>
+    </div>
+</div>

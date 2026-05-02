@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center mt-5">
+    <h1 class="display-4">🏆 AI-Powered Internship Portal</h1>
+    <p class="lead">Connecting talented students with top recruiters using smart skill matching.</p>
+    
+    @if (!User.Identity.IsAuthenticated)
+    {
+        <div class="mt-4">
+            <a href="/Account/Register" class="btn btn-primary btn-lg">Get Started Today</a>
+            <a href="/Account/Login" class="btn btn-outline-secondary btn-lg ms-2">Login</a>
+        </div>
+    }
+    else
+    {
+        <div class="mt-4">
+            <h3>Welcome back!</h3>
+            <p>Check your dashboard to see your latest internship matches.</p>
+            <a href="/Student/Index" class="btn btn-success">View My Matches</a>
+        </div>
+    }
+</div>

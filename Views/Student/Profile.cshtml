@@ -1,0 +1,90 @@
+@model InternshipPortal.Models.StudentProfile
+
+<div class="container mt-5 pb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                <!-- Header with Primary Background -->
+                <div class="card-header bg-primary py-4 text-white text-center border-0">
+                    <i class="bi bi-person-badge fs-1"></i>
+                    <h2 class="fw-bold mb-0">Professional Profile</h2>
+                    <p class="mb-0 opacity-75">Update your details to improve your AI match score</p>
+                </div>
+
+                <div class="card-body p-4 p-md-5 bg-white">
+                    <form asp-action="Profile" method="post" enctype="multipart/form-data">
+                        <input type="hidden" asp-for="ProfileId" />
+                        <input type="hidden" asp-for="UserId" />
+
+                        <!-- Skills Section -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-dark">
+                                <i class="bi bi-cpu text-primary me-2"></i> Your Skills
+                            </label>
+                            <input asp-for="Skills" class="form-control form-control-lg border-2 shadow-sm" 
+                                   placeholder="e.g. C#, SQL, HTML, React" required />
+                            <div class="form-text mt-2">
+                                <i class="bi bi-info-circle"></i> Separate skills with a **comma** for the AI matching engine to work properly.
+                            </div>
+                        </div>
+
+                        <!-- Education Section -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-dark">
+                                <i class="bi bi-book text-primary me-2"></i> Education / University
+                            </label>
+                            <input asp-for="Education" class="form-control form-control-lg border-2 shadow-sm" 
+                                   placeholder="e.g. Bachelors in Computer Science" required />
+                        </div>
+
+                        <!-- Resume Upload Section -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-dark">
+                                <i class="bi bi-file-earmark-pdf text-danger me-2"></i> Upload Resume (PDF Only)
+                            </label>
+                            <div class="input-group">
+                                <input type="file" name="resumeFile" class="form-control border-2 shadow-sm" accept=".pdf" />
+                            </div>
+                            
+                            @if (!string.IsNullOrEmpty(Model.ResumePath))
+                            {
+                                <div class="mt-3 p-3 bg-light rounded border border-dashed text-center">
+                                    <p class="small text-muted mb-2">Current Resume on File:</p>
+                                    <a href="/resumes/@Model.ResumePath" target="_blank" class="btn btn-sm btn-outline-danger rounded-pill px-4">
+                                        <i class="bi bi-eye"></i> View Current CV
+                                    </a>
+                                </div>
+                            }
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="d-grid gap-2 mt-5">
+                            <button type="submit" class="btn btn-primary btn-lg rounded-pill shadow fw-bold py-3">
+                                <i class="bi bi-cloud-arrow-up-fill me-2"></i> Save & Update Profile
+                            </button>
+                            <a asp-action="Index" class="btn btn-link text-decoration-none text-muted">Cancel and go back</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Professional Tip Card -->
+            <div class="alert alert-info mt-4 border-0 shadow-sm rounded-4 d-flex align-items-center">
+                <i class="bi bi-lightbulb-fill fs-3 me-3 text-warning"></i>
+                <div>
+                    <strong>Pro Tip:</strong> Profiles with 5 or more skills have a 40% higher chance of being hired by recruiters!
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-control:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+    }
+    .card { transition: transform 0.3s; }
+    .border-2 { border-width: 2px !important; }
+    .border-dashed { border-style: dashed !important; }
+</style>

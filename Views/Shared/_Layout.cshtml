@@ -1,0 +1,235 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - InternshipPortal</title>
+    
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- SweetAlert2 (Professional Popups) -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+    
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/InternshipPortal.styles.css" asp-append-version="true" />
+
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #f8f9fa; }
+
+        /* Modern Navbar Styling */
+        .navbar {
+            background: white !important;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            padding: 12px 0;
+        }
+
+        .navbar-brand {
+            font-weight: 600;
+            color: #0d6efd !important;
+            font-size: 1.4rem;
+            letter-spacing: -0.5px;
+        }
+
+        /* The "Highlighter" Effect */
+        .nav-link {
+            font-weight: 500;
+            color: #555 !important;
+            margin: 0 8px;
+            position: relative;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-link:hover {
+            color: #0d6efd !important;
+        }
+
+        /* The Blue Underline Highlighter */
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: #0d6efd;
+            transition: width 0.3s;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Active Page Highlighter */
+        .active-link {
+            color: #0d6efd !important;
+        }
+        .active-link::after {
+            width: 100%;
+        }
+
+        /* Buttons */
+        .btn-auth {
+            border-radius: 50px;
+            padding: 8px 24px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .navbar-toggler { border: none; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <i class="bi bi-rocket-takeoff-fill"></i> InternshipPortal
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" ? "active-link" : "") text-dark" asp-area="" asp-controller="Home" asp-action="Index">
+                                <i class="bi bi-house-door"></i> Home
+                            </a>
+                        </li>
+
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            @if (User.IsInRole("Student"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "Index" && ViewContext.RouteData.Values["Controller"]?.ToString() == "Student" ? "active-link" : "")" 
+                                       asp-controller="Student" asp-action="Index">
+                                        <i class="bi bi-grid-1x2"></i> Dashboard
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "MyApplications" ? "active-link" : "")" 
+                                       asp-controller="Student" asp-action="MyApplications">
+                                        <i class="bi bi-file-earmark-check"></i> Applications
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "Profile" ? "active-link" : "")" 
+                                       asp-controller="Student" asp-action="Profile">
+                                        <i class="bi bi-person-badge"></i> Profile
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "ResumeBot" ? "active-link" : "")" 
+                                        asp-controller="Student" asp-action="ResumeBot">
+                                            <i class="bi bi-chat-dots-fill text-primary"></i> Resume AI
+                                    </a>
+                                </li>
+                            }
+                            else if (User.IsInRole("Recruiter"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "Index" && ViewContext.RouteData.Values["Controller"]?.ToString() == "Internship" ? "active-link" : "")" 
+                                       asp-controller="Internship" asp-action="Index">
+                                        <i class="bi bi-briefcase"></i> Manage Jobs
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "Create" ? "active-link" : "")" 
+                                       asp-controller="Internship" asp-action="Create">
+                                        <i class="bi bi-plus-circle"></i> Post Job
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link @(ViewContext.RouteData.Values["Action"]?.ToString() == "Applicants" ? "active-link" : "")" 
+                                       asp-controller="Internship" asp-action="Applicants">
+                                        <i class="bi bi-people"></i> Applicants
+                                    </a>
+                                </li>
+                            }
+                        }
+                    </ul>
+
+                    <ul class="navbar-nav">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item d-flex align-items-center">
+                                <span class="nav-link text-primary fw-bold">
+                                    <i class="bi bi-person-fill"></i> Hi, @(User.Identity?.Name ?? "Guest")!
+                                </span>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-outline-danger btn-auth ms-2" asp-controller="Account" asp-action="Logout">
+                                    <i class="bi bi-box-arrow-right"></i> Logout
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-primary btn-auth text-white shadow-sm" asp-controller="Account" asp-action="Register">Get Started</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted bg-white mt-5 p-4">
+        <div class="container text-center">
+            &copy; 2026 - <span class="text-primary fw-bold">InternshipPortal</span> - 
+            <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-decoration-none">Privacy Policy</a>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    
+    <!-- Professional Notification Handler -->
+    <script>
+        @if (TempData["Success"] != null)
+        {
+            <text>
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: '@TempData["Success"]',
+                timer: 3000,
+                showConfirmButton: false
+            });
+            </text>
+        }
+
+        @if (TempData["Error"] != null)
+        {
+            <text>
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: '@TempData["Error"]',
+            });
+            </text>
+        }
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

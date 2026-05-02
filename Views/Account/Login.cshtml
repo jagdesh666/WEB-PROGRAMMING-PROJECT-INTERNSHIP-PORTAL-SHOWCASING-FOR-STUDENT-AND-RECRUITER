@@ -1,0 +1,21 @@
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5 border p-4 shadow">
+            <h2 class="text-center">Login</h2>
+            @if (ViewBag.Error != null) {
+                <div class="alert alert-danger">@ViewBag.Error</div>
+            }
+            <form asp-action="Login" method="post">
+                <div class="mb-3">
+                    <label>Email</label>
+                    <input name="email" type="email" class="form-control" required />
+                </div>
+                <div class="mb-3">
+                    <label>Password</label>
+                    <input name="password" type="password" class="form-control" required />
+                </div>
+                <button type="submit" class="btn btn-success w-100">Login</button>
+            </form>
+        </div>
+    </div>
+</div>
