@@ -3,9 +3,15 @@ using InternshipPortal.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 1. DATABASE CONNECTION (PostgreSQL)
+// --- DATABASE CONNECTION LOGIC (FIXED FOR CLOUD) ---
+// Pehle ye check karega ke kya hum Render par hain (DATABASE_URL mojood hai?)
+// Agar nahi, toh appsettings.json wala local connection uthayega.
+var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL") 
+                      ?? builder.Configuration.GetConnectionString("DefaultConnection");
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(connectionString));
+// ---------------------------------------------------
 
 // 2. COOKIE AUTHENTICATION (This remembers who is logged in)
 builder.Services.AddAuthentication("CookieAuth")
